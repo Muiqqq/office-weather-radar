@@ -1,13 +1,10 @@
-import { useTheme } from '@mui/material/styles';
+import React from 'react';
 
 const App = () => {
-  const theme = useTheme();
-
   return (
-    <header>
-      <p>Weather Radaraa</p>
-    </header>
+    <h1>
+      <p>Weather Radar</p>
+    </h1>
   );
 };
-
 export default App;
