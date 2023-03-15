@@ -1,12 +1,12 @@
-import './App.css';
+import { useTheme } from '@mui/material/styles';
 
 const App = () => {
+  const theme = useTheme();
+
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <p>Weather Radar</p>
-      </header>
-    </div>
+    <header>
+      <p>Weather Radaraa</p>
+    </header>
   );
 };
 
