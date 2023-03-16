@@ -1,4 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Selector from './components/selector';
+
+const listOptions = [
+  { value: 'all', description: 'Kaikki kaupungit' },
+  {
+    value: 'tampere',
+    description: 'Tampere',
+  },
+  {
+    value: 'jyvaskyla',
+    description: 'Jyväskylä',
+  },
+  {
+    value: 'kuopio',
+    description: 'Kuopio',
+  },
+  {
+    value: 'espoo',
+    description: 'Espoo',
+  },
+];
 
 const App = () => {
   return (
@@ -7,15 +28,12 @@ const App = () => {
         <p>Säätutka</p>
       </div>
       <div className='container'>
-        <div className='selector-container'>
-          <select name='office' id='office'>
-            <option value='all'>Kaikki kaupungit</option>
-            <option value='tampere'>Tampere</option>
-            <option value='jyvaskyla'>Jyväskylä</option>
-            <option value='kuopio'>Kuopio</option>
-            <option value='espoo'>Espoo</option>
-          </select>
-        </div>
+        <Selector
+          className='selector-container'
+          id='officelocation'
+          name='office'
+          options={listOptions}
+        />
         <div className='report-container'>
           <div className='card'>
             <div className=''>
