@@ -7,7 +7,7 @@ $secondary-font-color: #70757a;
 $spacing: 8px;
 
 * {
-  color: #262626;
+  color: $primary-font-color;
   margin: 0;
   padding: 0;
   border: 0;
@@ -21,7 +21,6 @@ body {
   justify-content: center;
   font-family: 'Arial', sans-serif;
   font-weight: normal;
-  color: #262626;
   background-color: $bg-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
