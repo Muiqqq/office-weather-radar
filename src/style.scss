@@ -2,6 +2,8 @@ $bg-color: #00a5e5;
 $primary-bg-color: #f8f9fa;
 $secondary-bg-color: #ffffff;
 $border-color: #e6e6e6;
+$primary-font-color: #262626;
+$secondary-font-color: #70757a;
 $spacing: 8px;
 
 * {
@@ -23,6 +25,18 @@ body {
   background-color: $bg-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.flex {
+  display: flex;
+}
+
+.align-end {
+  align-self: flex-end;
+}
+
+.align-center {
+  align-self: center;
 }
 
 .header-container {
@@ -58,6 +72,11 @@ body {
   }
 }
 
+.secondary-text {
+  font-size: 13pt;
+  color: $secondary-font-color;
+}
+
 .report-container {
   width: 90%;
   height: 300px;
@@ -69,10 +88,49 @@ body {
   .card {
     background-color: $secondary-bg-color;
     width: 100%;
-    height: 200px;
-    padding: 10px;
+    padding: $spacing * 3;
+    padding-top: $spacing;
     border: 1px solid $border-color;
     border-radius: 3px;
+
+    .card-row {
+      display: flex;
+
+      &:first-child {
+        margin-bottom: $spacing * 4;
+      }
+
+      .primary-temperature {
+        p {
+          font-size: 26pt;
+        }
+        img {
+          max-height: 80px;
+          width: auto;
+        }
+      }
+
+      .card-item {
+        flex: 50%;
+
+        &:first-child {
+          text-align: left;
+        }
+
+        &:last-child {
+          justify-content: end;
+          text-align: end;
+        }
+
+        .city {
+          font-size: 19pt;
+        }
+
+        .date {
+          font-size: 15pt;
+        }
+      }
+    }
   }
 
   .trihourly {
