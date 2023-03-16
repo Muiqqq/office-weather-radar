@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Selector from './components/selector';
+import WeatherReport from './components/weatherreport';
 
 const listOptions = [
   { value: 'all', description: 'Kaikki kaupungit' },
@@ -43,21 +44,7 @@ const App = () => {
           options={listOptions}
           onChange={onSelect}
         />
-        <div className='report-container'>
-          <div className='card'>
-            <div className=''>
-              <p>Espoo</p>
-              <p>Scattered clouds</p>
-            </div>
-          </div>
-          <div className='trihourly'>
-            <div className='trihourly-item'>15:00</div>
-            <div className='trihourly-item'>15:00</div>
-            <div className='trihourly-item'>15:00</div>
-            <div className='trihourly-item'>15:00</div>
-            <div className='trihourly-item'>15:00</div>
-          </div>
-        </div>
+        <WeatherReport />
       </div>
     </>
   );
