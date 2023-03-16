@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Selector = ({ className, name, id, options }) => {
+const Selector = ({ selected, className, name, id, options, onChange }) => {
   const listOfOptions = options.map((option) => (
     <option value={option.value} key={option.value}>
       {option.description}
@@ -9,7 +9,7 @@ const Selector = ({ className, name, id, options }) => {
 
   return (
     <div className={className}>
-      <select name={name} id={id}>
+      <select name={name} id={id} onChange={onChange} value={selected}>
         {listOfOptions}
       </select>
     </div>

@@ -22,6 +22,13 @@ const listOptions = [
 ];
 
 const App = () => {
+  const [selected, setSelected] = useState(listOptions[0].value);
+  console.log(selected);
+
+  const onSelect = (event) => {
+    setSelected(event.target.value);
+  };
+
   return (
     <>
       <div className='header-container'>
@@ -29,10 +36,12 @@ const App = () => {
       </div>
       <div className='container'>
         <Selector
+          selected={selected}
           className='selector-container'
           id='officelocation'
           name='office'
           options={listOptions}
+          onChange={onSelect}
         />
         <div className='report-container'>
           <div className='card'>
