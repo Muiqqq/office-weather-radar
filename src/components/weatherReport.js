@@ -110,7 +110,7 @@ const Card = ({ fetchResult, err, isLoaded }) => {
       </div>
     );
   }
-  if (isLoaded) {
+  if (!isLoaded) {
     return (
       <div className='card'>
         <div className='skeleton-placeholder'>LOADING...</div>
