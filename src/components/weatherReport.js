@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Trihourly = (fetchResult, err, isLoaded) => {
+const Trihourly = (data, err, isLoaded) => {
   return (
     <div className='trihourly-container'>
       <div className='trihourly-item'>
@@ -20,16 +20,16 @@ const Trihourly = (fetchResult, err, isLoaded) => {
   );
 };
 
-const Card = ({ fetchResult, err, isLoaded }) => {
-  const parsePrecipitationFrom = (fetchResult) => {
-    // console.log(fetchResult);
+const Card = ({ data, err, isLoaded }) => {
+  const parsePrecipitationFrom = (data) => {
+    // console.log(data);
 
     // return to this to make sure it works!!!
-    if (fetchResult.snow && '3h' in fetchResult.snow) {
-      return fetchResult.snow['3h'];
+    if (data.snow && '3h' in data.snow) {
+      return data.snow['3h'];
     }
-    if (fetchResult.rain && '3h' in fetchResult.rain) {
-      return fetchResult.rain['3h'];
+    if (data.rain && '3h' in data.rain) {
+      return data.rain['3h'];
     }
     return 0;
   };
@@ -55,16 +55,16 @@ const Card = ({ fetchResult, err, isLoaded }) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  if (fetchResult) {
-    const cityName = fetchResult.name;
-    const weatherDescription = capitalize(fetchResult.weather[0].description);
-    const iconSrc = `https://openweathermap.org/img/wn/${fetchResult.weather[0].icon}@2x.png`;
-    const temperature = Math.round(fetchResult.main.temp);
-    const precipitation3h = parsePrecipitationFrom(fetchResult);
+  if (data) {
+    const cityName = data.name;
+    const weatherDescription = capitalize(data.weather[0].description);
+    const iconSrc = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    const temperature = Math.round(data.main.temp);
+    const precipitation3h = parsePrecipitationFrom(data);
 
     // Datetime from OpenWeatherMap comes as seconds, multiply to milliseconds
     // to get correct datetime with Date
-    const timestamp = new Date(fetchResult.dt * 1000);
+    const timestamp = new Date(data.dt * 1000);
     const month = timestamp.toLocaleString('default', { month: 'short' });
     const day = timestamp.toLocaleString('default', { day: 'numeric' });
     const time = new Date(Date.now()).toLocaleTimeString([], {
@@ -73,8 +73,8 @@ const Card = ({ fetchResult, err, isLoaded }) => {
       hour12: false,
     });
 
-    const windSpeed = fetchResult.wind.speed;
-    const humidity = fetchResult.main.humidity;
+    const windSpeed = data.wind.speed;
+    const humidity = data.main.humidity;
 
     return (
       <div className='card'>
@@ -151,7 +151,7 @@ const WeatherReport = ({ currentWeatherURL, trihourlyWeatherURL }) => {
 
   return (
     <div className='report-container'>
-      <Card fetchResult={currentWeatherData} err={error} isLoaded={isLoaded} />
+      <Card data={currentWeatherData} err={error} isLoaded={isLoaded} />
       <Trihourly />
     </div>
   );
