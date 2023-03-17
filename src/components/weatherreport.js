@@ -18,6 +18,23 @@ const Card = ({ fetchResult, err, isLoaded }) => {
   // also remember to do datetime manipulation YAY
   // also remember to handle precipitation!
 
+  const addOrdinalSuffixTo = (number) => {
+    const i = number;
+    const j = i % 10,
+      k = i % 100;
+
+    if (j === 1 && k !== 11) {
+      return number + 'st';
+    }
+    if (j === 2 && k !== 12) {
+      return number + 'nd';
+    }
+    if (j === 3 && k !== 13) {
+      return number + 'rd';
+    }
+    return number + 'th';
+  };
+
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
