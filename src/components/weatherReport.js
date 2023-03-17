@@ -1,39 +1,62 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Forecast = (data, err, isLoaded) => {
+// todo: Move things to their own files!!!
+
+const parsePrecipitationFrom = (data) => {
+  // return to this to make sure it works!!!
+  if (data.snow && '3h' in data.snow) {
+    return data.snow['3h'];
+  }
+  if (data.rain && '3h' in data.rain) {
+    return data.rain['3h'];
+  }
+  return 0;
+};
+
+const ForecastItem = ({ data }) => {
+  console.log(data);
+  const timestamp = new Date(data.dt * 1000);
+  const time = timestamp.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+  const iconSrc = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+  const temperature = Math.round(data.main.temp);
+  const windSpeed = data.wind.speed;
+  const humidity = data.main.humidity;
+  const precipitation3h = Math.round(parsePrecipitationFrom(data));
   return (
-    <div className='forecast-container'>
-      <div className='forecast-item'>
-        <div className='forecast-top'>
-          <p className='secondary-text'>15:00</p>
-          <img src={`https://openweathermap.org/img/wn/10d.png`} alt='temp' />
-          <p className='forecast-temperature'>-30&deg;C</p>
-        </div>
-        <div className='forecast-bottom'>
-          <p className='secondary-text-smaller'>3.5 m/s</p>
-          <p className='secondary-text-smaller'>99 %</p>
-          <p className='secondary-text-smaller'>0 mm</p>
-        </div>
+    <div className='forecast-item'>
+      <div className='forecast-top'>
+        <p className='time secondary-text'>{time}</p>
+        <img src={iconSrc} alt='temp' />
+        <p className='forecast-temperature'>{temperature}&deg;C</p>
+      </div>
+      <div className='forecast-bottom'>
+        <p className='wind-speed secondary-text-smaller'>{windSpeed} m/s</p>
+        <p className='hymidity secondary-text-smaller'>{humidity} %</p>
+        <p className='precipitation secondary-text-smaller'>
+          {precipitation3h} mm
+        </p>
       </div>
     </div>
   );
 };
 
+const Forecast = ({ data, err, isLoaded }) => {
+  // console.log(data.list);
+  if (data) {
+    const forecasts = data.list.map((elem) => {
+      return <ForecastItem data={elem} key={elem.dt} />;
+    });
+    return <div className='forecast-container'>{forecasts}</div>;
+  }
+  return null;
+};
+
 const Card = ({ data, err, isLoaded }) => {
-  const parsePrecipitationFrom = (data) => {
-    // console.log(data);
-
-    // return to this to make sure it works!!!
-    if (data.snow && '3h' in data.snow) {
-      return data.snow['3h'];
-    }
-    if (data.rain && '3h' in data.rain) {
-      return data.rain['3h'];
-    }
-    return 0;
-  };
-
   const addOrdinalSuffixTo = (number) => {
     const i = number;
     const j = i % 10,
@@ -60,7 +83,7 @@ const Card = ({ data, err, isLoaded }) => {
     const weatherDescription = capitalize(data.weather[0].description);
     const iconSrc = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     const temperature = Math.round(data.main.temp);
-    const precipitation3h = parsePrecipitationFrom(data);
+    const precipitation3h = Math.round(parsePrecipitationFrom(data));
 
     // Datetime from OpenWeatherMap comes as seconds, multiply to milliseconds
     // to get correct datetime with Date
@@ -153,7 +176,7 @@ const WeatherReport = ({ currentWeatherURL, forecastURL }) => {
   return (
     <div className='report-container'>
       <Card data={currentWeatherData} err={error} isLoaded={isLoaded} />
-      <Forecast data={forecastData} />
+      <Forecast data={forecastData} err={error} isLoaded={isLoaded} />
     </div>
   );
 };
