@@ -120,30 +120,32 @@ const Card = ({ fetchResult, err, isLoaded }) => {
   return null;
 };
 
-const WeatherReport = ({ fetchUrl }) => {
-  const [fetchResult, setFetchResult] = useState(null);
+const WeatherReport = ({ currentWeatherURL, trihourlyWeatherURL }) => {
+  const [currentWeatherData, setCurrentWeatherData] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchWeather = async () => {
+    const fetchCurrentWeather = async () => {
       try {
-        const response = await axios.get(fetchUrl);
+        const response = await axios.get(currentWeatherURL);
         // console.log(response.data);
-        setFetchResult(response.data);
+        setCurrentWeatherData(response.data);
       } catch (err) {
-        setFetchResult(null);
+        setCurrentWeatherData(null);
         setError(err.message);
       } finally {
         setIsLoaded(true);
       }
     };
-    fetchWeather();
-  }, [fetchUrl]);
+    fetchCurrentWeather();
+    // fetchTrihourlyWeather();
+  }, [currentWeatherURL]);
 
   return (
     <div className='report-container'>
-      <Card fetchResult={fetchResult} err={error} isLoaded={isLoaded} />
+      <Card fetchResult={currentWeatherData} err={error} isLoaded={isLoaded} />
+      <Trihourly />
     </div>
   );
 };
