@@ -15,7 +15,6 @@ const parsePrecipitationFrom = (data) => {
 };
 
 const ForecastItem = ({ data }) => {
-  console.log(data);
   const timestamp = new Date(data.dt * 1000);
   const time = timestamp.toLocaleTimeString([], {
     hour: '2-digit',
@@ -46,7 +45,6 @@ const ForecastItem = ({ data }) => {
 };
 
 const Forecast = ({ data, err, isLoaded }) => {
-  // console.log(data.list);
   if (data) {
     const forecasts = data.list.map((elem) => {
       return <ForecastItem data={elem} key={elem.dt} />;
