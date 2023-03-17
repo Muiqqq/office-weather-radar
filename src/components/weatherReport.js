@@ -129,15 +129,17 @@ const Card = ({ data, err, isLoaded }) => {
 
 const WeatherReport = ({ currentWeatherURL, trihourlyWeatherURL }) => {
   const [currentWeatherData, setCurrentWeatherData] = useState(null);
+  const [trihourlyWeatherData, setTrihourlyWeatherData] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchCurrentWeather = async () => {
+    const fetchWeather = async () => {
       try {
-        const response = await axios.get(currentWeatherURL);
-        // console.log(response.data);
-        setCurrentWeatherData(response.data);
+        const currentWeatherResponse = await axios.get(currentWeatherURL);
+        const trihourlyWeatherResponse = await axios.get(trihourlyWeatherURL);
+        setCurrentWeatherData(currentWeatherResponse.data);
+        setTrihourlyWeatherData(trihourlyWeatherResponse.data);
       } catch (err) {
         setCurrentWeatherData(null);
         setError(err.message);
@@ -145,14 +147,13 @@ const WeatherReport = ({ currentWeatherURL, trihourlyWeatherURL }) => {
         setIsLoaded(true);
       }
     };
-    fetchCurrentWeather();
-    // fetchTrihourlyWeather();
-  }, [currentWeatherURL]);
+    fetchWeather();
+  }, [currentWeatherURL, trihourlyWeatherURL]);
 
   return (
     <div className='report-container'>
       <Card data={currentWeatherData} err={error} isLoaded={isLoaded} />
-      <Trihourly />
+      <Trihourly data={trihourlyWeatherData} />
     </div>
   );
 };
