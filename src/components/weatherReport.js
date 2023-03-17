@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Trihourly = () => {
+const Trihourly = (fetchResult, err, isLoaded) => {
   return (
-    <div className='trihourly'>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
+    <div className='trihourly-container'>
+      <div className='trihourly-item'>
+        <div className='trihourly-top'>
+          <p className='secondary-text'>15:00</p>
+          <img src={`https://openweathermap.org/img/wn/10d.png`} alt='temp' />
+          <p className='trihourly-temperature'>-30&deg;C</p>
+        </div>
+        <div className='trihourly-bottom'>
+          <p className='secondary-text-smaller'>3.5 m/s</p>
+          <p className='secondary-text-smaller'>99 %</p>
+          <p className='secondary-text-smaller'>0 mm</p>
+        </div>
+      </div>
     </div>
   );
 };

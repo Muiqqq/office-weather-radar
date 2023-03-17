@@ -1,6 +1,7 @@
 $bg-color: #00a5e5;
 $primary-bg-color: #f8f9fa;
 $secondary-bg-color: #ffffff;
+$tertiary-bg-color: #e5f6fd;
 $border-color: #e6e6e6;
 $primary-font-color: #262626;
 $secondary-font-color: #70757a;
@@ -76,9 +77,13 @@ body {
   color: $secondary-font-color;
 }
 
+.secondary-text-smaller {
+  @extend .secondary-text;
+  font-size: 10pt;
+}
+
 .report-container {
   width: 90%;
-  height: 300px;
   margin-top: $spacing;
   margin-left: auto;
   margin-right: auto;
@@ -132,16 +137,37 @@ body {
     }
   }
 
-  .trihourly {
+  .smaller {
+    font-size: 10pt;
+  }
+
+  .trihourly-container {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     width: 100%;
     margin-top: $spacing;
+    margin-bottom: $spacing * 3;
+
+    .trihourly-top {
+      text-align: center;
+      border-bottom: 1px solid $border-color;
+      padding: $spacing * 2;
+
+      .trihourly-temperature {
+        font-size: 15pt;
+      }
+    }
+
+    .trihourly-bottom {
+      text-align: center;
+      background-color: $tertiary-bg-color;
+      width: 100%;
+      padding: $spacing * 2;
+    }
 
     .trihourly-item {
-      padding: 5px;
-      height: 100px;
+      // padding: 5px;
       background-color: $secondary-bg-color;
       border-radius: 3px;
       border: 1px solid $border-color;
