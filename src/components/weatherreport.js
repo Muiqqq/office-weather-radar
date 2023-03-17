@@ -14,9 +14,18 @@ const Trihourly = () => {
 };
 
 const Card = ({ fetchResult, err, isLoaded }) => {
-  // Should probably parse the fetchResult into variables here at the top?
-  // also remember to do datetime manipulation YAY
-  // also remember to handle precipitation!
+  const parsePrecipitationFrom = (fetchResult) => {
+    // console.log(fetchResult);
+
+    // return to this to make sure it works!!!
+    if (fetchResult.snow && '3h' in fetchResult.snow) {
+      return fetchResult.snow['3h'];
+    }
+    if (fetchResult.rain && '3h' in fetchResult.rain) {
+      return fetchResult.rain['3h'];
+    }
+    return 0;
+  };
 
   const addOrdinalSuffixTo = (number) => {
     const i = number;
@@ -40,40 +49,55 @@ const Card = ({ fetchResult, err, isLoaded }) => {
   };
 
   if (fetchResult) {
-    console.log(fetchResult);
+    const cityName = fetchResult.name;
+    const weatherDescription = capitalize(fetchResult.weather[0].description);
+    const iconSrc = `https://openweathermap.org/img/wn/${fetchResult.weather[0].icon}@2x.png`;
+    const temperature = Math.round(fetchResult.main.temp);
+    const precipitation3h = parsePrecipitationFrom(fetchResult);
+
+    // Datetime from OpenWeatherMap comes as seconds, multiply to milliseconds
+    // to get correct datetime with Date
+    const timestamp = new Date(fetchResult.dt * 1000);
+    const month = timestamp.toLocaleString('default', { month: 'short' });
+    const day = timestamp.toLocaleString('default', { day: 'numeric' });
+    const time = new Date(Date.now()).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+
+    const windSpeed = fetchResult.wind.speed;
+    const humidity = fetchResult.main.humidity;
+
     return (
       <div className='card'>
         <div className='card-row'>
           <div className='card-item align-center'>
-            <p className='city'>{fetchResult.name}</p>
-            <p className='secondary-text weather-description'>
-              {capitalize(fetchResult.weather[0].description)}
+            <p className='city'>{cityName}</p>
+            <p className='weather-description secondary-text'>
+              {weatherDescription}
             </p>
           </div>
           <div className='card-item flex primary-temperature'>
             <img
               className='card-weather-icon'
-              src={`https://openweathermap.org/img/wn/${fetchResult.weather[0].icon}@2x.png`}
-              alt={`Icon for current weather: ${capitalize(
-                fetchResult.weather[0].description
-              )}`}
+              src={iconSrc}
+              alt={`Icon for current weather: ${weatherDescription}`}
             ></img>
-            <p className='align-center'>
-              {Math.round(fetchResult.main.temp)} &deg;C
-            </p>
+            <p className='temperature align-center'>{temperature} &deg;C</p>
           </div>
         </div>
         <div className='card-row'>
           <div className='card-item align-end'>
-            <p className='date'>May 2nd</p>
-            <p className='secondary-text'>12:00</p>
+            <p className='date'>{`${month} ${addOrdinalSuffixTo(day)}`}</p>
+            <p className='time secondary-text'>{time}</p>
           </div>
           <div className='card-item'>
-            <p className='secondary-text'>Wind: {fetchResult.wind.speed} m/s</p>
-            <p className='secondary-text'>
-              Humidity: {fetchResult.main.humidity} %
+            <p className='wind-speed secondary-text'>Wind: {windSpeed} m/s</p>
+            <p className='humidity secondary-text'>Humidity: {humidity} %</p>
+            <p className='precipitation secondary-text'>
+              Precipitation (3h): {precipitation3h} mm
             </p>
-            <p className='secondary-text'>Precipitation (3h): 0 mm</p>
           </div>
         </div>
       </div>
