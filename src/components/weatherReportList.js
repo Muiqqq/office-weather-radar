@@ -12,13 +12,13 @@ const WeatherReportList = ({ listOfFetchables }) => {
     let lon = fetchableLocation.lon;
 
     const currentURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=metric&lang=fi`;
-    const trihourlyURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKEY}&cnt=5&lang=fi&units=metric`;
+    const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKEY}&cnt=5&lang=fi&units=metric`;
 
     // todo: Give lat & lon down, not the urls
     return (
       <WeatherReport
         currentWeatherURL={currentURL}
-        trihourlyWeatherURL={trihourlyURL}
+        forecastURL={forecastURL}
         key={fetchableLocation.value}
       />
     );

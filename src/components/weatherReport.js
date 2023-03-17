@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Trihourly = (data, err, isLoaded) => {
+const Forecast = (data, err, isLoaded) => {
   return (
-    <div className='trihourly-container'>
-      <div className='trihourly-item'>
-        <div className='trihourly-top'>
+    <div className='forecast-container'>
+      <div className='forecast-item'>
+        <div className='forecast-top'>
           <p className='secondary-text'>15:00</p>
           <img src={`https://openweathermap.org/img/wn/10d.png`} alt='temp' />
-          <p className='trihourly-temperature'>-30&deg;C</p>
+          <p className='forecast-temperature'>-30&deg;C</p>
         </div>
-        <div className='trihourly-bottom'>
+        <div className='forecast-bottom'>
           <p className='secondary-text-smaller'>3.5 m/s</p>
           <p className='secondary-text-smaller'>99 %</p>
           <p className='secondary-text-smaller'>0 mm</p>
@@ -127,9 +127,9 @@ const Card = ({ data, err, isLoaded }) => {
   return null;
 };
 
-const WeatherReport = ({ currentWeatherURL, trihourlyWeatherURL }) => {
+const WeatherReport = ({ currentWeatherURL, forecastURL }) => {
   const [currentWeatherData, setCurrentWeatherData] = useState(null);
-  const [trihourlyWeatherData, setTrihourlyWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
 
@@ -137,9 +137,9 @@ const WeatherReport = ({ currentWeatherURL, trihourlyWeatherURL }) => {
     const fetchWeather = async () => {
       try {
         const currentWeatherResponse = await axios.get(currentWeatherURL);
-        const trihourlyWeatherResponse = await axios.get(trihourlyWeatherURL);
+        const forecastWeatherResponse = await axios.get(forecastURL);
         setCurrentWeatherData(currentWeatherResponse.data);
-        setTrihourlyWeatherData(trihourlyWeatherResponse.data);
+        setForecastData(forecastWeatherResponse.data);
       } catch (err) {
         setCurrentWeatherData(null);
         setError(err.message);
@@ -148,12 +148,12 @@ const WeatherReport = ({ currentWeatherURL, trihourlyWeatherURL }) => {
       }
     };
     fetchWeather();
-  }, [currentWeatherURL, trihourlyWeatherURL]);
+  }, [currentWeatherURL, forecastURL]);
 
   return (
     <div className='report-container'>
       <Card data={currentWeatherData} err={error} isLoaded={isLoaded} />
-      <Trihourly data={trihourlyWeatherData} />
+      <Forecast data={forecastData} />
     </div>
   );
 };

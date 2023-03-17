@@ -141,7 +141,7 @@ body {
     font-size: 10pt;
   }
 
-  .trihourly-container {
+  .forecast-container {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
@@ -149,24 +149,24 @@ body {
     margin-top: $spacing;
     margin-bottom: $spacing * 3;
 
-    .trihourly-top {
+    .forecast-top {
       text-align: center;
       border-bottom: 1px solid $border-color;
       padding: $spacing * 2;
 
-      .trihourly-temperature {
+      .forecast-temperature {
         font-size: 15pt;
       }
     }
 
-    .trihourly-bottom {
+    .forecast-bottom {
       text-align: center;
       background-color: $tertiary-bg-color;
       width: 100%;
       padding: $spacing * 2;
     }
 
-    .trihourly-item {
+    .forecast-item {
       // padding: 5px;
       background-color: $secondary-bg-color;
       border-radius: 3px;
