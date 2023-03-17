@@ -1,4 +1,4 @@
-import WeatherReport from './weatherreport';
+import WeatherReport from './weatherReport';
 
 const WeatherReportList = ({ listOfFetchables }) => {
   const weatherReports = listOfFetchables.map((fetchableLocation) => {
