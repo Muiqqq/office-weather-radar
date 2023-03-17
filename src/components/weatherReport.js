@@ -1,32 +1,60 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Trihourly = () => {
+// todo: Move things to their own files!!!
+
+const parsePrecipitationFrom = (data) => {
+  // return to this to make sure it works!!!
+  if (data.snow && '3h' in data.snow) {
+    return data.snow['3h'];
+  }
+  if (data.rain && '3h' in data.rain) {
+    return data.rain['3h'];
+  }
+  return 0;
+};
+
+const ForecastItem = ({ data }) => {
+  const timestamp = new Date(data.dt * 1000);
+  const time = timestamp.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+  const iconSrc = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+  const temperature = Math.round(data.main.temp);
+  const windSpeed = data.wind.speed;
+  const humidity = data.main.humidity;
+  const precipitation3h = Math.round(parsePrecipitationFrom(data));
   return (
-    <div className='trihourly'>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
+    <div className='forecast-item'>
+      <div className='forecast-top'>
+        <p className='time secondary-text'>{time}</p>
+        <img src={iconSrc} alt='temp' />
+        <p className='forecast-temperature'>{temperature}&deg;C</p>
+      </div>
+      <div className='forecast-bottom'>
+        <p className='wind-speed secondary-text-smaller'>{windSpeed} m/s</p>
+        <p className='hymidity secondary-text-smaller'>{humidity} %</p>
+        <p className='precipitation secondary-text-smaller'>
+          {precipitation3h} mm
+        </p>
+      </div>
     </div>
   );
 };
 
-const Card = ({ fetchResult, err, isLoaded }) => {
-  const parsePrecipitationFrom = (fetchResult) => {
-    // console.log(fetchResult);
+const Forecast = ({ data, err, isLoaded }) => {
+  if (data) {
+    const forecasts = data.list.map((elem) => {
+      return <ForecastItem data={elem} key={elem.dt} />;
+    });
+    return <div className='forecast-container'>{forecasts}</div>;
+  }
+  return null;
+};
 
-    // return to this to make sure it works!!!
-    if (fetchResult.snow && '3h' in fetchResult.snow) {
-      return fetchResult.snow['3h'];
-    }
-    if (fetchResult.rain && '3h' in fetchResult.rain) {
-      return fetchResult.rain['3h'];
-    }
-    return 0;
-  };
-
+const Card = ({ data, err, isLoaded }) => {
   const addOrdinalSuffixTo = (number) => {
     const i = number;
     const j = i % 10,
@@ -48,16 +76,16 @@ const Card = ({ fetchResult, err, isLoaded }) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  if (fetchResult) {
-    const cityName = fetchResult.name;
-    const weatherDescription = capitalize(fetchResult.weather[0].description);
-    const iconSrc = `https://openweathermap.org/img/wn/${fetchResult.weather[0].icon}@2x.png`;
-    const temperature = Math.round(fetchResult.main.temp);
-    const precipitation3h = parsePrecipitationFrom(fetchResult);
+  if (data) {
+    const cityName = data.name;
+    const weatherDescription = capitalize(data.weather[0].description);
+    const iconSrc = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    const temperature = Math.round(data.main.temp);
+    const precipitation3h = Math.round(parsePrecipitationFrom(data));
 
     // Datetime from OpenWeatherMap comes as seconds, multiply to milliseconds
     // to get correct datetime with Date
-    const timestamp = new Date(fetchResult.dt * 1000);
+    const timestamp = new Date(data.dt * 1000);
     const month = timestamp.toLocaleString('default', { month: 'short' });
     const day = timestamp.toLocaleString('default', { day: 'numeric' });
     const time = new Date(Date.now()).toLocaleTimeString([], {
@@ -66,8 +94,8 @@ const Card = ({ fetchResult, err, isLoaded }) => {
       hour12: false,
     });
 
-    const windSpeed = fetchResult.wind.speed;
-    const humidity = fetchResult.main.humidity;
+    const windSpeed = data.wind.speed;
+    const humidity = data.main.humidity;
 
     return (
       <div className='card'>
@@ -120,30 +148,33 @@ const Card = ({ fetchResult, err, isLoaded }) => {
   return null;
 };
 
-const WeatherReport = ({ fetchUrl }) => {
-  const [fetchResult, setFetchResult] = useState(null);
+const WeatherReport = ({ currentWeatherURL, forecastURL }) => {
+  const [currentWeatherData, setCurrentWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await axios.get(fetchUrl);
-        // console.log(response.data);
-        setFetchResult(response.data);
+        const currentWeatherResponse = await axios.get(currentWeatherURL);
+        const forecastWeatherResponse = await axios.get(forecastURL);
+        setCurrentWeatherData(currentWeatherResponse.data);
+        setForecastData(forecastWeatherResponse.data);
       } catch (err) {
-        setFetchResult(null);
+        setCurrentWeatherData(null);
         setError(err.message);
       } finally {
         setIsLoaded(true);
       }
     };
     fetchWeather();
-  }, [fetchUrl]);
+  }, [currentWeatherURL, forecastURL]);
 
   return (
     <div className='report-container'>
-      <Card fetchResult={fetchResult} err={error} isLoaded={isLoaded} />
+      <Card data={currentWeatherData} err={error} isLoaded={isLoaded} />
+      <Forecast data={forecastData} err={error} isLoaded={isLoaded} />
     </div>
   );
 };
