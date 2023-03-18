@@ -29,16 +29,14 @@ const ForecastItem = ({ data }) => {
   return (
     <div className='forecast-item'>
       <div className='forecast-top'>
-        <p className='time secondary-text'>{time}</p>
+        <p className='time'>{time}</p>
         <img src={iconSrc} alt='temp' />
         <p className='forecast-temperature'>{temperature}&deg;C</p>
       </div>
       <div className='forecast-bottom'>
-        <p className='wind-speed secondary-text-smaller'>{windSpeed} m/s</p>
-        <p className='hymidity secondary-text-smaller'>{humidity} %</p>
-        <p className='precipitation secondary-text-smaller'>
-          {precipitation3h} mm
-        </p>
+        <p className='wind-speed'>{windSpeed} m/s</p>
+        <p className='humidity'>{humidity} %</p>
+        <p className='precipitation'>{precipitation3h} mm</p>
       </div>
     </div>
   );
@@ -100,30 +98,28 @@ const Card = ({ data, err, isLoaded }) => {
     return (
       <div className='card'>
         <div className='card-row'>
-          <div className='card-item align-center'>
+          <div className='card-item current-main'>
             <p className='city'>{cityName}</p>
-            <p className='weather-description secondary-text'>
-              {weatherDescription}
-            </p>
+            <p className='weather-description'>{weatherDescription}</p>
           </div>
-          <div className='card-item flex primary-temperature'>
+          <div className='card-item current-temperature'>
             <img
               className='card-weather-icon'
               src={iconSrc}
               alt={`Icon for current weather: ${weatherDescription}`}
             ></img>
-            <p className='temperature align-center'>{temperature} &deg;C</p>
+            <p className='temperature'>{temperature} &deg;C</p>
           </div>
         </div>
         <div className='card-row'>
-          <div className='card-item align-end'>
+          <div className='card-item current-datetime'>
             <p className='date'>{`${month} ${addOrdinalSuffixTo(day)}`}</p>
-            <p className='time secondary-text'>{time}</p>
+            <p className='time'>{time}</p>
           </div>
-          <div className='card-item'>
-            <p className='wind-speed secondary-text'>Wind: {windSpeed} m/s</p>
-            <p className='humidity secondary-text'>Humidity: {humidity} %</p>
-            <p className='precipitation secondary-text'>
+          <div className='card-item current-extras'>
+            <p className='wind-speed'>Wind: {windSpeed} m/s</p>
+            <p className='humidity'>Humidity: {humidity} %</p>
+            <p className='precipitation'>
               Precipitation (3h): {precipitation3h} mm
             </p>
           </div>

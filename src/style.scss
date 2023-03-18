@@ -24,6 +24,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@mixin flex {
+  display: flex;
+}
+
+@mixin align-end {
+  align-self: flex-end;
+}
+
+@mixin align-center {
+  align-self: center;
+}
+
+@mixin secondary-text {
+  font-size: 13pt;
+  color: $secondary-font-color;
+}
+
+@mixin secondary-text-smaller {
+  @include secondary-text;
+  font-size: 10pt;
+}
+
 .flex {
   display: flex;
 }
@@ -63,18 +85,9 @@ body {
 
   select {
     width: 100%;
+    font-size: 13pt;
     padding: $spacing;
   }
-}
-
-.secondary-text {
-  font-size: 13pt;
-  color: $secondary-font-color;
-}
-
-.secondary-text-smaller {
-  @extend .secondary-text;
-  font-size: 10pt;
 }
 
 .report-container {
@@ -99,7 +112,17 @@ body {
         margin-bottom: $spacing * 4;
       }
 
-      .primary-temperature {
+      .current-main {
+        @include align-center;
+
+        .weather-description {
+          @include secondary-text;
+        }
+      }
+
+      .current-temperature {
+        @include flex;
+
         p {
           font-size: 26pt;
         }
@@ -107,6 +130,21 @@ body {
           max-height: 80px;
           width: auto;
         }
+        .temperature {
+          @include align-center;
+        }
+      }
+
+      .current-datetime {
+        @include align-end;
+
+        .time {
+          @include secondary-text;
+        }
+      }
+
+      .current-extras > p {
+        @include secondary-text;
       }
 
       .card-item {
@@ -152,6 +190,10 @@ body {
       .forecast-temperature {
         font-size: 15pt;
       }
+
+      .time {
+        @include secondary-text;
+      }
     }
 
     .forecast-bottom {
@@ -159,6 +201,10 @@ body {
       background-color: $tertiary-bg-color;
       width: 100%;
       padding: $spacing * 2;
+
+      & > p {
+        @include secondary-text-smaller;
+      }
     }
 
     .forecast-item {
