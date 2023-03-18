@@ -46,11 +46,11 @@ const App = () => {
   };
 
   return (
-    <>
+    <div className='container'>
       <div className='header-container'>
         <p>Säätutka</p>
       </div>
-      <div className='container'>
+      <div className='content-container'>
         <Selector
           selected={selected}
           className='selector-container'
@@ -61,7 +61,7 @@ const App = () => {
         />
         <WeatherReportList listOfFetchables={handleSelection()} />
       </div>
-    </>
+    </div>
   );
 };
 export default App;
