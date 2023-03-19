@@ -1,4 +1,4 @@
-// COLORS
+/* COLORS */
 $bg-color: #00a5e5;
 $primary-bg-color: #f8f9fa;
 $secondary-bg-color: #ffffff;
@@ -7,7 +7,7 @@ $border-color: #e6e6e6;
 $primary-font-color: #262626;
 $secondary-font-color: #70757a;
 
-// FONT-SIZING (according to specification provided for this exercise)
+/* FONT-SIZING (according to specification provided for this exercise) */
 $header-font-size: 23pt;
 $secondary-font-size: 13pt;
 $secondary-font-size-smaller: 10pt;
@@ -16,7 +16,7 @@ $forecast-temperature-font-size: 15pt;
 $location-font-size: 19pt;
 $date-font-size: 15pt;
 
-// GENERAL
+/* GENERAL */
 $spacing: 8px;
 
 * {
@@ -95,6 +95,7 @@ body {
   margin-top: $spacing;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: $spacing * 3;
   justify-content: center;
 
   .card {
@@ -151,6 +152,7 @@ body {
         flex: 50%;
 
         &:first-child {
+          flex: 20%;
           text-align: left;
         }
 
@@ -172,42 +174,143 @@ body {
 
   .forecast-container {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: space-between;
     width: 100%;
     margin-top: $spacing;
     margin-bottom: $spacing * 3;
 
-    .forecast-top {
-      text-align: center;
-      border-bottom: 1px solid $border-color;
-      padding: $spacing * 2;
-
-      .forecast-temperature {
-        font-size: $forecast-temperature-font-size;
-      }
-
-      .time {
-        @include secondary-text;
-      }
-    }
-
-    .forecast-bottom {
-      text-align: center;
-      background-color: $tertiary-bg-color;
-      width: 100%;
-      padding: $spacing * 2;
-
-      & > p {
-        @include secondary-text-smaller;
-      }
-    }
-
     .forecast-item {
-      // padding: 5px;
+      margin-bottom: $spacing;
+      display: flex;
       background-color: $secondary-bg-color;
       border-radius: 3px;
       border: 1px solid $border-color;
+
+      & > div {
+        padding: $spacing;
+      }
+
+      .forecast-top {
+        display: flex;
+        flex: 60%;
+        border-right: 1px solid $border-color;
+
+        p {
+          @include align-center;
+        }
+
+        img {
+          margin-right: 0;
+          margin-left: auto;
+        }
+
+        .forecast-temperature {
+          font-size: $forecast-temperature-font-size;
+          margin-right: 15%;
+        }
+
+        .time {
+          @include secondary-text;
+          margin: {
+            right: $spacing;
+            left: $spacing;
+          }
+        }
+      }
+
+      .forecast-bottom {
+        flex: 40%;
+        text-align: center;
+        background-color: $tertiary-bg-color;
+        width: 100%;
+
+        p {
+          @include secondary-text-smaller;
+        }
+      }
     }
+  }
+}
+
+@mixin forecast-lg {
+  .forecast-container {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+
+    .forecast-item {
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 18%;
+      .forecast-top {
+        display: flex;
+        flex-direction: column;
+        border-right: 0;
+
+        img,
+        .forecast-temperature {
+          margin: 0;
+        }
+      }
+      .forecast-bottom {
+        border-top: 1px solid $border-color;
+      }
+      & > div {
+        padding: $spacing;
+      }
+    }
+  }
+}
+
+@mixin desktop-rules {
+  .content-container {
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .selector-container {
+    max-width: 48%;
+  }
+
+  .report-container {
+    max-width: 48%;
+    @include forecast-lg;
+  }
+}
+
+@media screen and (min-width: 479px) {
+  .report-container {
+    @include forecast-lg;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .selector-container {
+    width: 70%;
+  }
+  .report-container {
+    width: 70%;
+    @include forecast-lg;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  @include desktop-rules;
+  .content-container {
+    max-width: 85%;
+  }
+}
+
+@media screen and (min-width: 1921px) {
+  @include desktop-rules;
+  .content-container {
+    max-width: 90%;
+  }
+  .report-container {
+    width: 23%;
   }
 }

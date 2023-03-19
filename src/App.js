@@ -50,15 +50,15 @@ const App = () => {
       <div className='header-container'>
         <p>Säätutka</p>
       </div>
+      <Selector
+        selected={selected}
+        className='selector-container'
+        id='officelocation'
+        name='office'
+        options={listOptions}
+        onChange={onSelect}
+      />
       <div className='content-container'>
-        <Selector
-          selected={selected}
-          className='selector-container'
-          id='officelocation'
-          name='office'
-          options={listOptions}
-          onChange={onSelect}
-        />
         <WeatherReportList listOfFetchables={handleSelection()} />
       </div>
     </div>
