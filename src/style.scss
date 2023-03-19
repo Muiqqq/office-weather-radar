@@ -48,14 +48,25 @@ body {
   align-self: center;
 }
 
+@mixin scale-font($original-size) {
+  @media (min-width: 320px) {
+    font-size: calc($original-size * 0.8);
+  }
+
+  @media (min-width: 375px) {
+    font-size: $original-size;
+    // font-size: calc($original-size * 0.9);
+  }
+}
+
 @mixin secondary-text {
-  font-size: $secondary-font-size;
+  @include scale-font($secondary-font-size);
   color: $secondary-font-color;
 }
 
 @mixin secondary-text-smaller {
   @include secondary-text;
-  font-size: $secondary-font-size-smaller;
+  @include scale-font($secondary-font-size-smaller);
 }
 
 .header-container {
