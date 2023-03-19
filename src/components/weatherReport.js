@@ -45,7 +45,7 @@ const WeatherReport = ({ lat, lon }) => {
   return (
     <div className='report-container'>
       <WeatherCard data={currentWeatherData} isLoaded={isLoaded} />
-      <Forecast data={forecastData} isLoaded={isLoaded} />
+      <Forecast data={forecastData} />
     </div>
   );
 };
