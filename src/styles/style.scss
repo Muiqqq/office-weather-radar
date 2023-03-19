@@ -93,6 +93,11 @@ body {
   text-align: center;
 }
 
+.loading-container {
+  display: flex;
+  justify-content: center;
+}
+
 .container {
   background-color: $primary-bg-color;
 }

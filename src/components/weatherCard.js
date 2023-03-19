@@ -61,7 +61,12 @@ const WeatherCard = ({ data, isLoaded }) => {
   if (!isLoaded) {
     return (
       <div className='card'>
-        <div className='skeleton-placeholder'>LOADING...</div>
+        <div className='loading-container'>
+          <div class='lds-ripple'>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
       </div>
     );
   }
