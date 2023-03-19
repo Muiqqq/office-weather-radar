@@ -1,43 +1,16 @@
 import { useState } from 'react';
 import Selector from './components/selector';
 import WeatherReportList from './components/weatherReportList';
-
-const listOptions = [
-  { value: 'all', description: 'Kaikki kaupungit' },
-  {
-    value: 'tampere',
-    description: 'Tampere',
-    lat: 61.4991,
-    lon: 23.7871,
-  },
-  {
-    value: 'jyvaskyla',
-    description: 'Jyväskylä',
-    lat: 62.2415,
-    lon: 25.7209,
-  },
-  {
-    value: 'kuopio',
-    description: 'Kuopio',
-    lat: 62.8924,
-    lon: 27.677,
-  },
-  {
-    value: 'espoo',
-    description: 'Espoo',
-    lat: 60.25,
-    lon: 24.6667,
-  },
-];
+import locations from './locations';
 
 const App = () => {
-  const [selected, setSelected] = useState(listOptions[0].value);
+  const [selected, setSelected] = useState(locations[0].value);
 
   const handleSelection = () => {
-    if (selected === listOptions[0].value) {
-      return listOptions.slice(1);
+    if (selected === locations[0].value) {
+      return locations.slice(1);
     } else {
-      return listOptions.filter((elem) => elem.value === selected);
+      return locations.filter((elem) => elem.value === selected);
     }
   };
 
@@ -55,7 +28,7 @@ const App = () => {
         className='selector-container'
         id='officelocation'
         name='office'
-        options={listOptions}
+        options={locations}
         onChange={onSelect}
       />
       <div className='content-container'>
