@@ -1,3 +1,4 @@
+/* COLORS */
 $bg-color: #00a5e5;
 $primary-bg-color: #f8f9fa;
 $secondary-bg-color: #ffffff;
@@ -5,7 +6,19 @@ $tertiary-bg-color: #e5f6fd;
 $border-color: #e6e6e6;
 $primary-font-color: #262626;
 $secondary-font-color: #70757a;
-$spacing: 8px;
+
+/* FONT-SIZING (according to specification provided for this exercise) */
+$header-font-size: 23pt;
+$secondary-font-size: 13pt;
+$secondary-font-size-smaller: 10pt;
+$current-temperature-font-size: 26pt;
+$forecast-temperature-font-size: 15pt;
+$location-font-size: 19pt;
+$date-font-size: 15pt;
+
+/* GENERAL */
+$spacing: 4px;
+$spacing-lg: 8px;
 
 * {
   color: $primary-font-color;
@@ -17,43 +30,61 @@ $spacing: 8px;
 }
 
 body {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
   font-family: 'Arial', sans-serif;
   font-weight: normal;
-  background-color: $bg-color;
+  background-color: $primary-bg-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.flex {
+@mixin flex {
   display: flex;
 }
 
-.align-end {
+@mixin align-end {
   align-self: flex-end;
 }
 
-.align-center {
+@mixin align-center {
   align-self: center;
+}
+
+@mixin scale-font($original-size) {
+  @media (min-width: 320px) {
+    font-size: calc($original-size * 0.8);
+  }
+
+  @media (min-width: 375px) {
+    font-size: calc($original-size * 0.9);
+  }
+
+  @media (min-width: 440px) {
+    font-size: $original-size;
+  }
+}
+
+@mixin secondary-text {
+  @include scale-font($secondary-font-size);
+  color: $secondary-font-color;
+}
+
+@mixin secondary-text-smaller {
+  @include secondary-text;
+  @include scale-font($secondary-font-size-smaller);
 }
 
 .header-container {
   background-color: #ffffff;
-  width: 100vw;
   padding: 20px;
   text-align: center;
   border-bottom: 1px solid $border-color;
-  margin: auto;
   p {
-    font-size: 23pt;
+    font-size: $header-font-size;
+    @include scale-font($header-font-size);
   }
 }
 
 .container {
-  height: 100vh;
-  padding: $spacing;
   background-color: $primary-bg-color;
 }
 
@@ -63,23 +94,16 @@ body {
   text-align: center;
   width: 90%;
   margin: auto;
-  padding: 10px;
+  margin-top: $spacing;
+  padding: $spacing;
   border: 1px solid $border-color;
   border-radius: 3px;
+
   select {
+    @include scale-font($secondary-font-size);
     width: 100%;
-    padding: 5px;
+    padding: $spacing;
   }
-}
-
-.secondary-text {
-  font-size: 13pt;
-  color: $secondary-font-color;
-}
-
-.secondary-text-smaller {
-  @extend .secondary-text;
-  font-size: 10pt;
 }
 
 .report-container {
@@ -87,37 +111,68 @@ body {
   margin-top: $spacing;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: $spacing * 3;
   justify-content: center;
 
   .card {
     background-color: $secondary-bg-color;
     width: 100%;
     padding: $spacing * 3;
-    padding-top: $spacing;
+    padding-top: $spacing * 2;
     border: 1px solid $border-color;
     border-radius: 3px;
 
     .card-row {
       display: flex;
+      margin: {
+        left: 3%;
+        right: 3%;
+      }
 
       &:first-child {
         margin-bottom: $spacing * 4;
       }
 
-      .primary-temperature {
+      .current-main {
+        @include align-center;
+
+        .weather-description {
+          @include secondary-text;
+        }
+      }
+
+      .current-temperature {
+        @include flex;
+
         p {
-          font-size: 26pt;
+          @include scale-font($current-temperature-font-size);
         }
         img {
-          max-height: 80px;
-          width: auto;
+          max-width: 60px;
+          height: auto;
         }
+        .temperature {
+          @include align-center;
+        }
+      }
+
+      .current-datetime {
+        @include align-end;
+
+        .time {
+          @include secondary-text;
+        }
+      }
+
+      .current-extras > p {
+        @include secondary-text;
       }
 
       .card-item {
         flex: 50%;
 
         &:first-child {
+          flex: 30%;
           text-align: left;
         }
 
@@ -127,50 +182,171 @@ body {
         }
 
         .city {
-          font-size: 19pt;
+          @include scale-font($location-font-size);
         }
 
         .date {
-          font-size: 15pt;
+          @include scale-font($date-font-size);
         }
       }
     }
-  }
-
-  .smaller {
-    font-size: 10pt;
   }
 
   .forecast-container {
     display: flex;
     flex-wrap: nowrap;
+    flex-direction: row;
     justify-content: space-between;
+    overflow: hidden;
     width: 100%;
     margin-top: $spacing;
     margin-bottom: $spacing * 3;
 
-    .forecast-top {
-      text-align: center;
-      border-bottom: 1px solid $border-color;
-      padding: $spacing * 2;
-
-      .forecast-temperature {
-        font-size: 15pt;
-      }
-    }
-
-    .forecast-bottom {
-      text-align: center;
-      background-color: $tertiary-bg-color;
-      width: 100%;
-      padding: $spacing * 2;
-    }
-
     .forecast-item {
-      // padding: 5px;
+      margin-bottom: $spacing;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 18%;
       background-color: $secondary-bg-color;
       border-radius: 3px;
       border: 1px solid $border-color;
+
+      & > div {
+        padding: $spacing;
+      }
+
+      .forecast-top {
+        display: flex;
+        flex-direction: column;
+
+        p {
+          @include align-center;
+        }
+
+        img {
+          width: 30px;
+          height: auto;
+          margin: auto;
+        }
+
+        .forecast-temperature {
+          @include scale-font($forecast-temperature-font-size);
+        }
+
+        .time {
+          @include secondary-text;
+          margin: {
+            right: $spacing;
+            left: $spacing;
+          }
+        }
+      }
+
+      .forecast-bottom {
+        flex: 40%;
+        width: 100%;
+        border-top: 1px solid $border-color;
+        text-align: center;
+        background-color: $tertiary-bg-color;
+
+        p {
+          @include secondary-text-smaller;
+        }
+      }
     }
   }
+}
+
+@mixin desktop-rules {
+  .content-container {
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .report-container {
+    max-width: 48%;
+  }
+
+  .selector-container {
+    width: 1000px;
+  }
+  .content-container {
+    width: 1000px;
+  }
+}
+
+@media screen and (min-width: 440px) {
+  .selector-container {
+    margin-top: $spacing-lg;
+    padding: $spacing-lg;
+
+    select {
+      padding: $spacing-lg;
+    }
+  }
+
+  .report-container {
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-lg * 3;
+
+    .card {
+      padding: $spacing-lg * 3;
+      padding-top: $spacing-lg * 2;
+
+      .card-row {
+        margin: {
+          left: 0;
+          right: 0;
+        }
+
+        &:first-child {
+          margin-bottom: $spacing-lg * 4;
+        }
+      }
+    }
+    .forecast-container {
+      margin: {
+        top: $spacing-lg;
+        bottom: $spacing-lg * 3;
+      }
+
+      .forecast-item {
+        margin-bottom: $spacing-lg;
+
+        & > div {
+          padding: $spacing-lg;
+        }
+
+        .forecast-top {
+          img {
+            width: auto;
+            height: auto;
+          }
+
+          .time {
+            margin: {
+              right: $spacing-lg;
+              left: $spacing-lg;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .selector-container {
+    width: 60%;
+  }
+  .report-container {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  @include desktop-rules;
 }
