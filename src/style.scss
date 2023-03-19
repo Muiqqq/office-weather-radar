@@ -17,7 +17,8 @@ $location-font-size: 19pt;
 $date-font-size: 15pt;
 
 /* GENERAL */
-$spacing: 8px;
+$spacing: 4px;
+$spacing-lg: 8px;
 
 * {
   color: $primary-font-color;
@@ -54,8 +55,11 @@ body {
   }
 
   @media (min-width: 375px) {
+    font-size: calc($original-size * 0.9);
+  }
+
+  @media (min-width: 440px) {
     font-size: $original-size;
-    // font-size: calc($original-size * 0.9);
   }
 }
 
@@ -76,6 +80,7 @@ body {
   border-bottom: 1px solid $border-color;
   p {
     font-size: $header-font-size;
+    @include scale-font($header-font-size);
   }
 }
 
@@ -95,8 +100,8 @@ body {
   border-radius: 3px;
 
   select {
+    @include scale-font($secondary-font-size);
     width: 100%;
-    font-size: $secondary-font-size;
     padding: $spacing;
   }
 }
@@ -113,7 +118,7 @@ body {
     background-color: $secondary-bg-color;
     width: 100%;
     padding: $spacing * 3;
-    padding-top: $spacing;
+    padding-top: $spacing * 2;
     border: 1px solid $border-color;
     border-radius: 3px;
 
@@ -140,11 +145,11 @@ body {
         @include flex;
 
         p {
-          font-size: $current-temperature-font-size;
+          @include scale-font($current-temperature-font-size);
         }
         img {
-          max-height: 80px;
-          width: auto;
+          max-width: 60px;
+          height: auto;
         }
         .temperature {
           @include align-center;
@@ -167,7 +172,7 @@ body {
         flex: 50%;
 
         &:first-child {
-          flex: 35%;
+          flex: 30%;
           text-align: left;
         }
 
@@ -177,11 +182,11 @@ body {
         }
 
         .city {
-          font-size: $location-font-size;
+          @include scale-font($location-font-size);
         }
 
         .date {
-          font-size: $date-font-size;
+          @include scale-font($date-font-size);
         }
       }
     }
@@ -220,11 +225,13 @@ body {
         }
 
         img {
+          width: 30px;
+          height: auto;
           margin: auto;
         }
 
         .forecast-temperature {
-          font-size: $forecast-temperature-font-size;
+          @include scale-font($forecast-temperature-font-size);
         }
 
         .time {
@@ -268,6 +275,66 @@ body {
   }
   .content-container {
     width: 1000px;
+  }
+}
+
+@media screen and (min-width: 440px) {
+  .selector-container {
+    margin-top: $spacing-lg;
+    padding: $spacing-lg;
+
+    select {
+      padding: $spacing-lg;
+    }
+  }
+
+  .report-container {
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-lg * 3;
+
+    .card {
+      padding: $spacing-lg * 3;
+      padding-top: $spacing-lg * 2;
+
+      .card-row {
+        margin: {
+          left: 0;
+          right: 0;
+        }
+
+        &:first-child {
+          margin-bottom: $spacing-lg * 4;
+        }
+      }
+    }
+    .forecast-container {
+      margin: {
+        top: $spacing-lg;
+        bottom: $spacing-lg * 3;
+      }
+
+      .forecast-item {
+        margin-bottom: $spacing-lg;
+
+        & > div {
+          padding: $spacing-lg;
+        }
+
+        .forecast-top {
+          img {
+            width: auto;
+            height: auto;
+          }
+
+          .time {
+            margin: {
+              right: $spacing-lg;
+              left: $spacing-lg;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
