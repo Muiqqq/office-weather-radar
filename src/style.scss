@@ -119,6 +119,10 @@ body {
 
     .card-row {
       display: flex;
+      margin: {
+        left: 3%;
+        right: 3%;
+      }
 
       &:first-child {
         margin-bottom: $spacing * 4;
@@ -163,7 +167,7 @@ body {
         flex: 50%;
 
         &:first-child {
-          flex: 20%;
+          flex: 35%;
           text-align: left;
         }
 
@@ -188,6 +192,7 @@ body {
     flex-wrap: nowrap;
     flex-direction: row;
     justify-content: space-between;
+    overflow: hidden;
     width: 100%;
     margin-top: $spacing;
     margin-bottom: $spacing * 3;
@@ -220,7 +225,6 @@ body {
 
         .forecast-temperature {
           font-size: $forecast-temperature-font-size;
-          margin-right: 15%;
         }
 
         .time {
@@ -255,42 +259,27 @@ body {
     justify-content: center;
   }
 
-  .selector-container {
-    max-width: 48%;
-  }
-
   .report-container {
     max-width: 48%;
   }
-}
 
-// @media screen and (min-width: 479px) {
-//   .report-container {
-//   }
-// }
+  .selector-container {
+    width: 1000px;
+  }
+  .content-container {
+    width: 1000px;
+  }
+}
 
 @media screen and (min-width: 768px) {
   .selector-container {
-    width: 70%;
+    width: 60%;
   }
   .report-container {
-    width: 70%;
+    width: 60%;
   }
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1024px) {
   @include desktop-rules;
-  .content-container {
-    max-width: 85%;
-  }
-}
-
-@media screen and (min-width: 1921px) {
-  @include desktop-rules;
-  .content-container {
-    max-width: 90%;
-  }
-  .report-container {
-    width: 23%;
-  }
 }
