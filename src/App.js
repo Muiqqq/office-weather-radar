@@ -21,7 +21,7 @@ const App = () => {
   return (
     <div className='container'>
       <div className='header-container'>
-        <p>Säätutka</p>
+        <p>Weather Radar</p>
       </div>
       <Selector
         selected={selected}

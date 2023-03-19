@@ -1,5 +1,5 @@
 const locations = [
-  { value: 'all', description: 'Kaikki kaupungit' },
+  { value: 'all', description: 'All cities' },
   {
     value: 'tampere',
     description: 'Tampere',
