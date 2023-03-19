@@ -185,8 +185,8 @@ body {
 
   .forecast-container {
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-direction: row;
     justify-content: space-between;
     width: 100%;
     margin-top: $spacing;
@@ -195,6 +195,9 @@ body {
     .forecast-item {
       margin-bottom: $spacing;
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 18%;
       background-color: $secondary-bg-color;
       border-radius: 3px;
       border: 1px solid $border-color;
@@ -205,16 +208,14 @@ body {
 
       .forecast-top {
         display: flex;
-        flex: 60%;
-        border-right: 1px solid $border-color;
+        flex-direction: column;
 
         p {
           @include align-center;
         }
 
         img {
-          margin-right: 0;
-          margin-left: auto;
+          margin: auto;
         }
 
         .forecast-temperature {
@@ -233,43 +234,14 @@ body {
 
       .forecast-bottom {
         flex: 40%;
+        width: 100%;
+        border-top: 1px solid $border-color;
         text-align: center;
         background-color: $tertiary-bg-color;
-        width: 100%;
 
         p {
           @include secondary-text-smaller;
         }
-      }
-    }
-  }
-}
-
-@mixin forecast-lg {
-  .forecast-container {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-
-    .forecast-item {
-      flex-direction: column;
-      align-items: center;
-      flex: 0 0 18%;
-      .forecast-top {
-        display: flex;
-        flex-direction: column;
-        border-right: 0;
-
-        img,
-        .forecast-temperature {
-          margin: 0;
-        }
-      }
-      .forecast-bottom {
-        border-top: 1px solid $border-color;
-      }
-      & > div {
-        padding: $spacing;
       }
     }
   }
@@ -289,15 +261,13 @@ body {
 
   .report-container {
     max-width: 48%;
-    @include forecast-lg;
   }
 }
 
-@media screen and (min-width: 479px) {
-  .report-container {
-    @include forecast-lg;
-  }
-}
+// @media screen and (min-width: 479px) {
+//   .report-container {
+//   }
+// }
 
 @media screen and (min-width: 768px) {
   .selector-container {
@@ -305,7 +275,6 @@ body {
   }
   .report-container {
     width: 70%;
-    @include forecast-lg;
   }
 }
 
