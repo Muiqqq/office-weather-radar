@@ -28,7 +28,7 @@ const ForecastItem = ({ data }) => {
   );
 };
 
-const Forecast = ({ data, err, isLoaded }) => {
+const Forecast = ({ data }) => {
   if (data) {
     const forecasts = data.list.map((elem) => {
       return <ForecastItem data={elem} key={elem.dt} />;

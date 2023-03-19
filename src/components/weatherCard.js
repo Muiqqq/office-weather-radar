@@ -4,7 +4,7 @@ import {
   addOrdinalSuffixTo,
 } from '../utils';
 
-const WeatherCard = ({ data, err, isLoaded }) => {
+const WeatherCard = ({ data, isLoaded }) => {
   if (data) {
     const cityName = data.name;
     const weatherDescription = capitalize(data.weather[0].description);
@@ -55,13 +55,6 @@ const WeatherCard = ({ data, err, isLoaded }) => {
             </p>
           </div>
         </div>
-      </div>
-    );
-  }
-  if (err) {
-    return (
-      <div className='card'>
-        <div className='error'>Something unexpected occurred :/</div>
       </div>
     );
   }

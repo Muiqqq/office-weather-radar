@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { ErrorContext } from '../App';
 import axios from 'axios';
 import Forecast from './forecast';
 import WeatherCard from './weatherCard';
@@ -16,10 +17,10 @@ const options = {
 };
 
 const WeatherReport = ({ lat, lon }) => {
+  const setErrorMessage = useContext(ErrorContext);
   const [currentWeatherData, setCurrentWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(null);
 
   const currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=${options.units}&lang=${options.lang}`;
   const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=${options.units}&lang=${options.lang}&cnt=${options.count}`;
@@ -32,19 +33,19 @@ const WeatherReport = ({ lat, lon }) => {
         setCurrentWeatherData(currentWeatherResponse.data);
         setForecastData(forecastWeatherResponse.data);
       } catch (err) {
+        setErrorMessage(err.message);
         setCurrentWeatherData(null);
-        setError(err.message);
       } finally {
         setIsLoaded(true);
       }
     };
     fetchWeather();
-  }, [currentWeatherURL, forecastURL]);
+  }, [currentWeatherURL, forecastURL, setErrorMessage]);
 
   return (
     <div className='report-container'>
-      <WeatherCard data={currentWeatherData} err={error} isLoaded={isLoaded} />
-      <Forecast data={forecastData} err={error} isLoaded={isLoaded} />
+      <WeatherCard data={currentWeatherData} isLoaded={isLoaded} />
+      <Forecast data={forecastData} isLoaded={isLoaded} />
     </div>
   );
 };

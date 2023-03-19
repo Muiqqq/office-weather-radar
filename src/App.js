@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 import Selector from './components/selector';
 import WeatherReportList from './components/weatherReportList';
 import locations from './locations';
 
+export const ErrorContext = createContext(() => {});
+
 const App = () => {
   const [selected, setSelected] = useState(locations[0].value);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSelection = () => {
     if (selected === locations[0].value) {
@@ -16,6 +19,7 @@ const App = () => {
 
   const onSelect = (event) => {
     setSelected(event.target.value);
+    setErrorMessage(null);
   };
 
   return (
@@ -31,9 +35,17 @@ const App = () => {
         options={locations}
         onChange={onSelect}
       />
-      <div className='content-container'>
-        <WeatherReportList listOfFetchables={handleSelection()} />
-      </div>
+      <ErrorContext.Provider value={setErrorMessage}>
+        <div className='content-container'>
+          {errorMessage ? (
+            <div className='error-container'>
+              An error occurred: {errorMessage}
+            </div>
+          ) : (
+            <WeatherReportList listOfFetchables={handleSelection()} />
+          )}
+        </div>
+      </ErrorContext.Provider>
     </div>
   );
 };
