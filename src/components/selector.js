@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Selector = ({ selected, className, name, id, options, onChange }) => {
   const listOfOptions = options.map((option) => (
     <option value={option.value} key={option.value}>
