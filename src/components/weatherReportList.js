@@ -1,11 +1,11 @@
 import WeatherReport from './weatherReport';
 
-const WeatherReportList = ({ listOfFetchables }) => {
-  const weatherReports = listOfFetchables.map((fetchableLocation) => {
-    let lat = fetchableLocation.lat;
-    let lon = fetchableLocation.lon;
+const WeatherReportList = ({ locations }) => {
+  const weatherReports = locations.map((location) => {
+    let lat = location.lat;
+    let lon = location.lon;
 
-    return <WeatherReport lat={lat} lon={lon} key={fetchableLocation.value} />;
+    return <WeatherReport lat={lat} lon={lon} key={location.value} />;
   });
 
   return <>{weatherReports}</>;

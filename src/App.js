@@ -55,7 +55,7 @@ const App = () => {
               An error occurred: {errorMessage}
             </div>
           ) : (
-            <WeatherReportList listOfFetchables={handleSelection()} />
+            <WeatherReportList locations={handleSelection()} />
           )}
         </div>
       </ErrorContext.Provider>
