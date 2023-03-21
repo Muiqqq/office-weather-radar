@@ -10,6 +10,12 @@ const selectorOptions = [
   ...locations,
 ];
 
+/**
+ * A Weather Radar App. Fetches weather data for predetermined locations
+ * from OpenWeatherMap api's. Predetermined locations stored in locations.js
+ *
+ * @returns React component representing a Weather Radar application
+ */
 const App = () => {
   const [selected, setSelected] = useState(selectorOptions[0].value);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -24,6 +30,8 @@ const App = () => {
 
   const onSelect = (event) => {
     setSelected(event.target.value);
+    // Reset error message on select, so the app can try to fetch data again
+    // after previously having received an error during api call
     setErrorMessage(null);
   };
 
