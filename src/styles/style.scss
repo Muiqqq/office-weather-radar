@@ -30,23 +30,11 @@ $spacing-lg: 8px;
 }
 
 body {
+  background-color: $primary-bg-color;
   font-family: 'Arial', sans-serif;
   font-weight: normal;
-  background-color: $primary-bg-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-@mixin flex {
-  display: flex;
-}
-
-@mixin align-end {
-  align-self: flex-end;
-}
-
-@mixin align-center {
-  align-self: center;
 }
 
 @mixin scale-font($original-size) {
@@ -76,8 +64,8 @@ body {
 .header-container {
   background-color: #ffffff;
   padding: 20px;
-  text-align: center;
   border-bottom: 1px solid $border-color;
+  text-align: center;
   p {
     font-size: $header-font-size;
     @include scale-font($header-font-size);
@@ -85,11 +73,11 @@ body {
 }
 
 .error-container {
-  height: 200px;
   width: 60%;
-  padding-top: 80px;
+  height: 200px;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 80px;
   text-align: center;
 }
 
@@ -105,13 +93,13 @@ body {
 .selector-container {
   background-color: $secondary-bg-color;
   justify-content: center;
-  text-align: center;
   width: 90%;
   margin: auto;
   margin-top: $spacing;
   padding: $spacing;
   border: 1px solid $border-color;
   border-radius: 3px;
+  text-align: center;
 
   select {
     @include scale-font($secondary-font-size);
@@ -122,11 +110,13 @@ body {
 
 .report-container {
   width: 90%;
-  margin-top: $spacing;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: $spacing * 3;
   justify-content: center;
+  margin: {
+    top: $spacing;
+    left: auto;
+    right: auto;
+    bottom: $spacing * 3;
+  }
 
   .card {
     background-color: $secondary-bg-color;
@@ -148,7 +138,7 @@ body {
       }
 
       .current-main {
-        @include align-center;
+        align-self: center;
 
         .weather-description {
           @include secondary-text;
@@ -156,7 +146,7 @@ body {
       }
 
       .current-temperature {
-        @include flex;
+        display: flex;
 
         p {
           @include scale-font($current-temperature-font-size);
@@ -166,12 +156,12 @@ body {
           height: auto;
         }
         .temperature {
-          @include align-center;
+          align-self: center;
         }
       }
 
       .current-datetime {
-        @include align-end;
+        align-self: flex-end;
 
         .time {
           @include secondary-text;
@@ -217,12 +207,12 @@ body {
     margin-bottom: $spacing * 3;
 
     .forecast-item {
-      margin-bottom: $spacing;
+      background-color: $secondary-bg-color;
       display: flex;
       flex-direction: column;
       align-items: center;
       flex: 0 0 18%;
-      background-color: $secondary-bg-color;
+      margin-bottom: $spacing;
       border-radius: 3px;
       border: 1px solid $border-color;
 
@@ -235,7 +225,7 @@ body {
         flex-direction: column;
 
         p {
-          @include align-center;
+          align-self: center;
         }
 
         img {
@@ -258,37 +248,17 @@ body {
       }
 
       .forecast-bottom {
+        background-color: $tertiary-bg-color;
         flex: 40%;
         width: 100%;
         border-top: 1px solid $border-color;
         text-align: center;
-        background-color: $tertiary-bg-color;
 
         p {
           @include secondary-text-smaller;
         }
       }
     }
-  }
-}
-
-@mixin desktop-rules {
-  .content-container {
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .report-container {
-    max-width: 48%;
-  }
-
-  .selector-container {
-    width: 1000px;
-  }
-  .content-container {
-    width: 1000px;
   }
 }
 
@@ -303,8 +273,10 @@ body {
   }
 
   .report-container {
-    margin-top: $spacing-lg;
-    margin-bottom: $spacing-lg * 3;
+    margin: {
+      top: $spacing-lg;
+      bottom: $spacing-lg * 3;
+    }
 
     .card {
       padding: $spacing-lg * 3;
@@ -362,5 +334,21 @@ body {
 }
 
 @media screen and (min-width: 1024px) {
-  @include desktop-rules;
+  .content-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+  }
+
+  .report-container {
+    max-width: 48%;
+  }
+
+  .selector-container {
+    width: 1000px;
+  }
+  .content-container {
+    width: 1000px;
+  }
 }
