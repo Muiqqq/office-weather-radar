@@ -62,7 +62,7 @@ const WeatherCard = ({ data, isLoaded }) => {
     return (
       <div className='card'>
         <div className='loading-container'>
-          <div class='lds-ripple'>
+          <div className='lds-ripple'>
             <div></div>
             <div></div>
           </div>
