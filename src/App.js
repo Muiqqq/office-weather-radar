@@ -1,17 +1,22 @@
 import { useState, createContext } from 'react';
+import locations from './locations';
 import Selector from './components/selector';
 import WeatherReportList from './components/weatherReportList';
-import locations from './locations';
 
 export const ErrorContext = createContext(() => {});
 
+const selectorOptions = [
+  { value: 'all', description: 'All cities' },
+  ...locations,
+];
+
 const App = () => {
-  const [selected, setSelected] = useState(locations[0].value);
+  const [selected, setSelected] = useState(selectorOptions[0].value);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSelection = () => {
-    if (selected === locations[0].value) {
-      return locations.slice(1);
+    if (selected === selectorOptions[0].value) {
+      return locations;
     } else {
       return locations.filter((elem) => elem.value === selected);
     }
@@ -32,7 +37,7 @@ const App = () => {
         className='selector-container'
         id='officelocation'
         name='office'
-        options={locations}
+        options={selectorOptions}
         onChange={onSelect}
       />
       <ErrorContext.Provider value={setErrorMessage}>

@@ -1,5 +1,4 @@
 const locations = [
-  { value: 'all', description: 'All cities' },
   {
     value: 'tampere',
     description: 'Tampere',
