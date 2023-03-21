@@ -1,5 +1,11 @@
 import { parsePrecipitationFrom } from '../utils';
 
+/**
+ * Displays a 3h forecast.
+ *
+ * @param data - Data to display, given down from Forecast component
+ * @returns A 3h forecast React component
+ */
 const ForecastItem = ({ data }) => {
   const timestamp = new Date(data.dt * 1000);
   const time = timestamp.toLocaleTimeString([], {
@@ -28,6 +34,12 @@ const ForecastItem = ({ data }) => {
   );
 };
 
+/**
+ * A list of 3h forecasts to display the weather every 3h.
+ *
+ * @param data - Forecast data received from OpenWeatherMap api
+ * @returns A list of ForecastItems to display a list of 3h forecasts
+ */
 const Forecast = ({ data }) => {
   if (data) {
     const forecasts = data.list.map((elem) => {

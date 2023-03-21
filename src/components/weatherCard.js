@@ -4,13 +4,19 @@ import {
   addOrdinalSuffixTo,
 } from '../utils';
 
+/**
+ * Weather Card component displays info on current weather of a location.
+ *
+ * @param data - Data received from api call to OpenWeatherMap
+ * @param isLoaded - Flag to determine if data has loaded
+ * @returns A Weather Card React component, displays current weather
+ */
 const WeatherCard = ({ data, isLoaded }) => {
   if (data) {
     const cityName = data.name;
     const weatherDescription = capitalize(data.weather[0].description);
     const iconSrc = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     const temperature = Math.round(data.main.temp);
-    const precipitation3h = Math.round(parsePrecipitationFrom(data));
 
     // Datetime from OpenWeatherMap comes as seconds, multiply to milliseconds
     // to get correct datetime with Date
@@ -25,6 +31,7 @@ const WeatherCard = ({ data, isLoaded }) => {
 
     const windSpeed = data.wind.speed;
     const humidity = data.main.humidity;
+    const precipitation3h = Math.round(parsePrecipitationFrom(data));
 
     return (
       <div className='card'>
@@ -62,7 +69,7 @@ const WeatherCard = ({ data, isLoaded }) => {
     return (
       <div className='card'>
         <div className='loading-container'>
-          <div class='lds-ripple'>
+          <div className='lds-ripple'>
             <div></div>
             <div></div>
           </div>

@@ -1,17 +1,28 @@
 import { useState, createContext } from 'react';
+import locations from './locations';
 import Selector from './components/selector';
 import WeatherReportList from './components/weatherReportList';
-import locations from './locations';
 
 export const ErrorContext = createContext(() => {});
 
+const selectorOptions = [
+  { value: 'all', description: 'All cities' },
+  ...locations,
+];
+
+/**
+ * A Weather Radar App. Fetches weather data for predetermined locations
+ * from OpenWeatherMap api's. Predetermined locations stored in locations.js
+ *
+ * @returns React component representing a Weather Radar application
+ */
 const App = () => {
-  const [selected, setSelected] = useState(locations[0].value);
+  const [selected, setSelected] = useState(selectorOptions[0].value);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSelection = () => {
-    if (selected === locations[0].value) {
-      return locations.slice(1);
+    if (selected === selectorOptions[0].value) {
+      return locations;
     } else {
       return locations.filter((elem) => elem.value === selected);
     }
@@ -19,6 +30,8 @@ const App = () => {
 
   const onSelect = (event) => {
     setSelected(event.target.value);
+    // Reset error message on select, so the app can try to fetch data again
+    // after previously having received an error during api call
     setErrorMessage(null);
   };
 
@@ -32,7 +45,7 @@ const App = () => {
         className='selector-container'
         id='officelocation'
         name='office'
-        options={locations}
+        options={selectorOptions}
         onChange={onSelect}
       />
       <ErrorContext.Provider value={setErrorMessage}>
@@ -42,7 +55,7 @@ const App = () => {
               An error occurred: {errorMessage}
             </div>
           ) : (
-            <WeatherReportList listOfFetchables={handleSelection()} />
+            <WeatherReportList locations={handleSelection()} />
           )}
         </div>
       </ErrorContext.Provider>
