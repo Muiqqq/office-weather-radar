@@ -37,18 +37,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@mixin flex {
-  display: flex;
-}
-
-@mixin align-end {
-  align-self: flex-end;
-}
-
-@mixin align-center {
-  align-self: center;
-}
-
 @mixin scale-font($original-size) {
   @media (min-width: 320px) {
     font-size: calc($original-size * 0.8);
@@ -148,7 +136,7 @@ body {
       }
 
       .current-main {
-        @include align-center;
+        align-self: center;
 
         .weather-description {
           @include secondary-text;
@@ -156,7 +144,7 @@ body {
       }
 
       .current-temperature {
-        @include flex;
+        display: flex;
 
         p {
           @include scale-font($current-temperature-font-size);
@@ -166,12 +154,12 @@ body {
           height: auto;
         }
         .temperature {
-          @include align-center;
+          align-self: center;
         }
       }
 
       .current-datetime {
-        @include align-end;
+        align-self: flex-end;
 
         .time {
           @include secondary-text;
@@ -235,7 +223,7 @@ body {
         flex-direction: column;
 
         p {
-          @include align-center;
+          align-self: center;
         }
 
         img {
@@ -269,26 +257,6 @@ body {
         }
       }
     }
-  }
-}
-
-@mixin desktop-rules {
-  .content-container {
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .report-container {
-    max-width: 48%;
-  }
-
-  .selector-container {
-    width: 1000px;
-  }
-  .content-container {
-    width: 1000px;
   }
 }
 
@@ -362,5 +330,21 @@ body {
 }
 
 @media screen and (min-width: 1024px) {
-  @include desktop-rules;
+  .content-container {
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .report-container {
+    max-width: 48%;
+  }
+
+  .selector-container {
+    width: 1000px;
+  }
+  .content-container {
+    width: 1000px;
+  }
 }
