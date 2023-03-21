@@ -1,149 +1,61 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { ErrorContext } from '../App';
 import axios from 'axios';
+import Forecast from './forecast';
+import WeatherCard from './weatherCard';
 
-const Trihourly = () => {
-  return (
-    <div className='trihourly'>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-      <div className='trihourly-item'>15:00</div>
-    </div>
-  );
+// Should not have secrets anywhere near a React app as they are visible in
+// the build! Proper way might be to make our own backend API which would store
+// the secrets and handle the actual fetching from OpenWeatherMap, and use
+// it as a proxy.
+const APIKEY = `${process.env.REACT_APP_API_KEY}`;
+
+// Api call options
+const options = {
+  lang: 'en',
+  units: 'metric',
+  count: 5,
 };
 
-const Card = ({ fetchResult, err, isLoaded }) => {
-  const parsePrecipitationFrom = (fetchResult) => {
-    // console.log(fetchResult);
-
-    // return to this to make sure it works!!!
-    if (fetchResult.snow && '3h' in fetchResult.snow) {
-      return fetchResult.snow['3h'];
-    }
-    if (fetchResult.rain && '3h' in fetchResult.rain) {
-      return fetchResult.rain['3h'];
-    }
-    return 0;
-  };
-
-  const addOrdinalSuffixTo = (number) => {
-    const i = number;
-    const j = i % 10,
-      k = i % 100;
-
-    if (j === 1 && k !== 11) {
-      return number + 'st';
-    }
-    if (j === 2 && k !== 12) {
-      return number + 'nd';
-    }
-    if (j === 3 && k !== 13) {
-      return number + 'rd';
-    }
-    return number + 'th';
-  };
-
-  const capitalize = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  };
-
-  if (fetchResult) {
-    const cityName = fetchResult.name;
-    const weatherDescription = capitalize(fetchResult.weather[0].description);
-    const iconSrc = `https://openweathermap.org/img/wn/${fetchResult.weather[0].icon}@2x.png`;
-    const temperature = Math.round(fetchResult.main.temp);
-    const precipitation3h = parsePrecipitationFrom(fetchResult);
-
-    // Datetime from OpenWeatherMap comes as seconds, multiply to milliseconds
-    // to get correct datetime with Date
-    const timestamp = new Date(fetchResult.dt * 1000);
-    const month = timestamp.toLocaleString('default', { month: 'short' });
-    const day = timestamp.toLocaleString('default', { day: 'numeric' });
-    const time = new Date(Date.now()).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-
-    const windSpeed = fetchResult.wind.speed;
-    const humidity = fetchResult.main.humidity;
-
-    return (
-      <div className='card'>
-        <div className='card-row'>
-          <div className='card-item align-center'>
-            <p className='city'>{cityName}</p>
-            <p className='weather-description secondary-text'>
-              {weatherDescription}
-            </p>
-          </div>
-          <div className='card-item flex primary-temperature'>
-            <img
-              className='card-weather-icon'
-              src={iconSrc}
-              alt={`Icon for current weather: ${weatherDescription}`}
-            ></img>
-            <p className='temperature align-center'>{temperature} &deg;C</p>
-          </div>
-        </div>
-        <div className='card-row'>
-          <div className='card-item align-end'>
-            <p className='date'>{`${month} ${addOrdinalSuffixTo(day)}`}</p>
-            <p className='time secondary-text'>{time}</p>
-          </div>
-          <div className='card-item'>
-            <p className='wind-speed secondary-text'>Wind: {windSpeed} m/s</p>
-            <p className='humidity secondary-text'>Humidity: {humidity} %</p>
-            <p className='precipitation secondary-text'>
-              Precipitation (3h): {precipitation3h} mm
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  if (err) {
-    return (
-      <div className='card'>
-        <div className='error'>Something unexpected occurred :/</div>
-      </div>
-    );
-  }
-  if (!isLoaded) {
-    return (
-      <div className='card'>
-        <div className='skeleton-placeholder'>LOADING...</div>
-      </div>
-    );
-  }
-  return null;
-};
-
-const WeatherReport = ({ fetchUrl }) => {
-  const [fetchResult, setFetchResult] = useState(null);
+/**
+ * A Weather Report component for one location.
+ *
+ * Consists of a card (displays current weather) and a list of 3h forecasts.
+ * @param lat - Latitude coordinate
+ * @param lon - Longitude coordinate
+ * @returns A Weather Report React component.
+ */
+const WeatherReport = ({ lat, lon }) => {
+  const setErrorMessage = useContext(ErrorContext);
+  const [currentWeatherData, setCurrentWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(null);
 
+  const currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=${options.units}&lang=${options.lang}`;
+  const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=${options.units}&lang=${options.lang}&cnt=${options.count}`;
+
+  // Side effect for fetching data for both current weather and forecasts
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await axios.get(fetchUrl);
-        // console.log(response.data);
-        setFetchResult(response.data);
+        const currentWeatherResponse = await axios.get(currentWeatherURL);
+        const forecastWeatherResponse = await axios.get(forecastURL);
+        setCurrentWeatherData(currentWeatherResponse.data);
+        setForecastData(forecastWeatherResponse.data);
       } catch (err) {
-        setFetchResult(null);
-        setError(err.message);
+        setErrorMessage(err.message);
+        setCurrentWeatherData(null);
       } finally {
         setIsLoaded(true);
       }
     };
     fetchWeather();
-  }, [fetchUrl]);
+  }, [currentWeatherURL, forecastURL, setErrorMessage]);
 
   return (
     <div className='report-container'>
-      <Card fetchResult={fetchResult} err={error} isLoaded={isLoaded} />
+      <WeatherCard data={currentWeatherData} isLoaded={isLoaded} />
+      <Forecast data={forecastData} />
     </div>
   );
 };

@@ -1,67 +1,65 @@
-import { useState } from 'react';
+import { useState, createContext } from 'react';
+import locations from './locations';
 import Selector from './components/selector';
 import WeatherReportList from './components/weatherReportList';
 
-const listOptions = [
-  { value: 'all', description: 'Kaikki kaupungit' },
-  {
-    value: 'tampere',
-    description: 'Tampere',
-    lat: 61.4991,
-    lon: 23.7871,
-  },
-  {
-    value: 'jyvaskyla',
-    description: 'Jyväskylä',
-    lat: 62.2415,
-    lon: 25.7209,
-  },
-  {
-    value: 'kuopio',
-    description: 'Kuopio',
-    lat: 62.8924,
-    lon: 27.677,
-  },
-  {
-    value: 'espoo',
-    description: 'Espoo',
-    lat: 60.25,
-    lon: 24.6667,
-  },
+export const ErrorContext = createContext(() => {});
+
+const selectorOptions = [
+  { value: 'all', description: 'All cities' },
+  ...locations,
 ];
 
+/**
+ * A Weather Radar App. Fetches weather data for predetermined locations
+ * from OpenWeatherMap api's. Predetermined locations stored in locations.js
+ *
+ * @returns React component representing a Weather Radar application
+ */
 const App = () => {
-  const [selected, setSelected] = useState(listOptions[0].value);
+  const [selected, setSelected] = useState(selectorOptions[0].value);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSelection = () => {
-    if (selected === listOptions[0].value) {
-      return listOptions.slice(1);
+    if (selected === selectorOptions[0].value) {
+      return locations;
     } else {
-      return listOptions.filter((elem) => elem.value === selected);
+      return locations.filter((elem) => elem.value === selected);
     }
   };
 
   const onSelect = (event) => {
     setSelected(event.target.value);
+    // Reset error message on select, so the app can try to fetch data again
+    // after previously having received an error during api call
+    setErrorMessage(null);
   };
 
   return (
-    <>
+    <div className='container'>
       <div className='header-container'>
-        <p>Säätutka</p>
+        <p>Weather Radar</p>
       </div>
-      <div className='container'>
-        <Selector
-          selected={selected}
-          className='selector-container'
-          id='officelocation'
-          name='office'
-          options={listOptions}
-          onChange={onSelect}
-        />
-        <WeatherReportList listOfFetchables={handleSelection()} />
-      </div>
-    </>
+      <Selector
+        selected={selected}
+        className='selector-container'
+        id='officelocation'
+        name='office'
+        options={selectorOptions}
+        onChange={onSelect}
+      />
+      <ErrorContext.Provider value={setErrorMessage}>
+        <div className='content-container'>
+          {errorMessage ? (
+            <div className='error-container'>
+              An error occurred: {errorMessage}
+            </div>
+          ) : (
+            <WeatherReportList locations={handleSelection()} />
+          )}
+        </div>
+      </ErrorContext.Provider>
+    </div>
   );
 };
 export default App;
