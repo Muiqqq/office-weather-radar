@@ -34,8 +34,7 @@ You need an [OpenWeatherMap](https://openweathermap.org/) api key to get data fr
 ### Creating a production build:
  - To create a build, run following command in project root in a terminal: `npm run build`
  - Production build will be found in the `/build` folder
- - You can open the production version of the app by serving the build with e.g. npm serve:
-   - Run `npx serve build` or install serve globally with `npm install -g serve` and running `serve build`
+ - You can run the production version of the app by running `npm run server-start`
    
 # Screenshots
 Mobile             |  Desktop
