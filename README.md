@@ -24,7 +24,12 @@ You need an [OpenWeatherMap](https://openweathermap.org/) api key to get data fr
 - Clone this repository to the location of your choice.
 - Navigate to the root folder, and create a file named: `.env`
   - Root folder is the one that includes files package.json and package-lock.json
-- Add the following line to `.env`: <br/>`REACT_APP_API_KEY=your-apikey-here`
+- Add the following lines to `.env`:
+```
+API_BASE_URL=https://api.openweathermap.org/data/2.5/
+API_KEY_NAME=appid
+API_KEY_VALUE=your-api-key-here
+```
 - Replace `your-apikey-here` with your api key from OpenWeatherMap. No quotation marks needed.
 - Open the project root folder in a terminal of your choice
 - Run following command to install dependencies: `npm install`
@@ -36,8 +41,7 @@ You need an [OpenWeatherMap](https://openweathermap.org/) api key to get data fr
 ### Creating a production build:
  - To create a build, run following command in project root in a terminal: `npm run build`
  - Production build will be found in the `/build` folder
- - You can open the production version of the app by serving the build with e.g. npm serve:
-   - Run `npx serve build` or install serve globally with `npm install -g serve` and running `serve build`
+ - You can run the production version of the app by running `npm run server-start`
    
 # Screenshots
 Mobile             |  Desktop
